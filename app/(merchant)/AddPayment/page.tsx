@@ -129,7 +129,7 @@ export default function AddPayment() {
                 placeholder="Enter amount in EGP"
                 required
                 min="1"
-                step="1"
+                step="0.01"
               />
             </div>
           </div>

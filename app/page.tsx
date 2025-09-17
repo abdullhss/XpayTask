@@ -1,11 +1,14 @@
+"use client"
 import Image from "next/image";
 import logo from "@/public/logo.png";
 import coins from "@/public/coins.png";
 import cridetCard from "@/public/cridet card.png";
 import "./Home.css";
 import Link from "next/link";
+import React, { useState } from "react";
 
 export default function Home() {
+  const [mobileOpen, setMobileOpen] = useState(false);
   return (
     <div className="home-container">
       {/* Floating Stars */}
@@ -59,8 +62,7 @@ export default function Home() {
           </ul>
         </nav>
 
-        {/* Mobile Menu Button */}
-        <button className="mobile-menu-btn">
+        <button className="mobile-menu-btn" onClick={() => setMobileOpen((v) => !v)} aria-label="Toggle menu" aria-expanded={mobileOpen}>
           <svg className="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
           </svg>
@@ -71,6 +73,17 @@ export default function Home() {
           <span className="get-started-text-mobile">Start</span>
         </button>
       </header>
+
+      <nav className={`mobile-nav ${mobileOpen ? "open" : ""}`}>
+        <ul className="nav-list">
+          <li>
+            <Link href="/AddPayment" className="nav-link" style={{color: "white"}} onClick={() => setMobileOpen(false)}>Creat Payment</Link>
+          </li>
+          <li>
+            <Link href="/AllPayments" className="nav-link" style={{color: "white"}} onClick={() => setMobileOpen(false)}>Show Payments</Link>
+          </li>
+        </ul>
+      </nav>
       
       <section className="main-section">
         {/* Content Section */}

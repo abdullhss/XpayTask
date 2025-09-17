@@ -1,0 +1,127 @@
+.payments-container {
+  padding: 24px;
+  background-color: #0a0a0a;
+  color: #ededed;
+  min-height: 100vh;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #ededed;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.payments-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: linear-gradient(145deg, #171717, #333333);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.5);
+}
+
+.payments-table th,
+.payments-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: left;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+.payments-table th {
+  background: #2a2a2a;
+  font-weight: 600;
+  color: #c3c3c3;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+.clickable-row {
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.clickable-row:hover {
+  background: linear-gradient(145deg, #333333, #444444);
+  transform: translateX(4px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-transform: capitalize;
+  font-size: 13px;
+  gap: 6px;
+}
+
+.status.pending {
+  background: linear-gradient(145deg, rgba(217, 119, 6, 0.15), rgba(217, 119, 6, 0.3));
+  color: #f59e0b;
+}
+
+.status.paid {
+  background: linear-gradient(145deg, rgba(22, 163, 74, 0.15), rgba(22, 163, 74, 0.3));
+  color: #22c55e;
+}
+
+.status.canceled {
+  background: linear-gradient(145deg, rgba(220, 38, 38, 0.15), rgba(220, 38, 38, 0.3));
+  color: #ef4444;
+}
+
+.status svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.status.pending svg {
+  color: #f59e0b;
+}
+
+.status.paid svg {
+  color: #22c55e;
+}
+
+.status.canceled svg {
+  color: #ef4444;
+}
+.filters {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.search-input,
+.status-select {
+  background: #171717;
+  color: #ededed;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.search-input:focus,
+.status-select:focus {
+  border-color: #22c55e;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.3);
+}
+
+.no-results {
+  text-align: center;
+  margin-top: 20px;
+  color: #a3a3a3;
+  font-size: 15px;
+}

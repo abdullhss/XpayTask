@@ -1,10 +1,29 @@
-import React from 'react'
-import {Payment} from  "../page"
+"use client"
+import React, { useEffect, useState } from 'react'
+import { Payment } from  "@/app/types/payment"
 import "./singlePayment.css"
+import { useParams } from 'next/navigation'
+import { Copy } from 'lucide-react'
 
+const PaymentCard = () => {
+  const params = useParams<{ payID: string }>();
+  const [payment, setPayment] = useState<Payment | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-const PaymentCard = (payment : Payment) => {
-    payment = { id: "pay_001", Name: "Ahmed", status: "pending" , amount: 100, location: "New York"} ;
+  useEffect(() => {
+    const id = params?.payID;
+    if (!id) return;
+    fetch(`/api/payments?id=${id}`)
+      .then(res => {
+        if (!res.ok) throw new Error("Not found");
+        return res.json();
+      })
+      .then(setPayment)
+      .catch(err => setError(err.message));
+  }, [params?.payID]);
+
+  if (error) return <div className="payment-card"><div className="card-body">{error}</div></div>
+  if (!payment) return <div className="payment-card"><div className="card-body">Loading...</div></div>
 
   return (
     <div className="payment-card">
@@ -25,6 +44,16 @@ const PaymentCard = (payment : Payment) => {
         <div className="payment-row">
           <span className="label">Location:</span>
           <span className="value">{payment.location}</span>
+        </div>
+        <div className="payment-row">
+          <span className="label">Customer link:</span>
+          <span className="value" style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+            <code>/CustomerOrder/{payment.id}</code>
+            <button className="btn btn-secondary" onClick={() => navigator.clipboard.writeText(`${window.location.origin}/CustomerOrder/${payment.id}`)}>
+              <Copy />
+              <span>Copy link</span>
+            </button>
+          </span>
         </div>
       </div>
     </div>

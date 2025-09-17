@@ -1,38 +1,45 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./AllPayments.css";
 import { useRouter } from "next/navigation";
-import { Clock, DollarSign, X } from "lucide-react";
+import { Clock, DollarSign, X, Copy } from "lucide-react";
+import { Payment } from "@/app/types/payment";
 
-export interface Payment {
-  id: string;
-  Name: string;
-  status: "pending" | "paid" | "canceled";
-  amount: number;
-  location: string;
-}
-
-const payments: Payment[] = [
-  { id: "pay_001", Name: "Ahmed", status: "pending", amount: 100, location: "New York" },
-  { id: "pay_002", Name: "Sara", status: "paid", amount: 200, location: "Alex" },
-  { id: "pay_003", Name: "Omar", status: "canceled", amount: 300, location: "Cairo" },
-  { id: "pay_004", Name: "Ahmed", status: "paid", amount: 500, location: "Dubai" },
-];
+export type { Payment };
 
 const AllPayments = () => {
   const router = useRouter();
   const [searchName, setSearchName] = useState("");
   const [searchStatus, setSearchStatus] = useState("all");
+  const [payments, setPayments] = useState<Payment[]>([]);
+  const [filteredPayments, setFilteredPayments] = useState<Payment[]>([]);
+
+  useEffect(() => {
+    fetch('/api/payments')
+      .then(res => res.json())
+      .then((data: Payment[]) => setPayments(data))
+      .catch(() => setPayments([]));
+  }, []);
+
+  useEffect(() => {
+    setFilteredPayments(
+      payments.filter((payment) => {
+        const matchesName = payment.Name.toLowerCase().includes(searchName.toLowerCase());
+        const matchesStatus = searchStatus === "all" || payment.status === searchStatus;
+        return matchesName && matchesStatus;
+      })
+    );
+  }, [payments, searchName, searchStatus]);
 
   const handleRowClick = (id: string) => {
     router.push(`/AllPayments/${id}`);
   };
 
-  const filteredPayments = payments.filter((payment) => {
-    const matchesName = payment.Name.toLowerCase().includes(searchName.toLowerCase());
-    const matchesStatus = searchStatus === "all" || payment.status === searchStatus;
-    return matchesName && matchesStatus;
-  });
+  const copyLink = async (id: string, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    const url = `${window.location.origin}/CustomerOrder/${id}`;
+    await navigator.clipboard.writeText(url);
+  };
 
   return (
     <div className="payments-container">
@@ -66,6 +73,7 @@ const AllPayments = () => {
             <th>Name</th>
             <th>Amount</th>
             <th>Status</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -85,6 +93,12 @@ const AllPayments = () => {
                   {payment.status === "canceled" && <X />}
                   {payment.status}
                 </span>
+              </td>
+              <td>
+                <button className="btn btn-secondary" onClick={(e) => copyLink(payment.id, e)}>
+                  <Copy />
+                  <span>Copy link</span>
+                </button>
               </td>
             </tr>
           ))}

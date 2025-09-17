@@ -1,7 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import "./AddPayment.css";
-import { CheckCircle, DollarSign, Hash, ListRestart, PlusIcon, User, MapPin } from "lucide-react";
+import { CheckCircle, DollarSign, Hash, ListRestart, PlusIcon, User, MapPin, Copy } from "lucide-react";
+import { createPayment } from "@/app/actions/payments";
 
 export default function AddPayment() {
   const [amount, setAmount] = useState("");
@@ -9,16 +10,27 @@ export default function AddPayment() {
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [createdId, setCreatedId] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsProcessing(true);
+    setCreatedId(null);
 
-    // Simulate API call
-    setTimeout(() => {
-      console.log({ amount, merchantOrderId, name, location });
+    try {
+      const formData = new FormData();
+      formData.append("amount", amount);
+      formData.append("name", name);
+      formData.append("location", location);
+
+      const id = await createPayment(formData);
+      setCreatedId(id);
+      handleReset();
+    } catch (err) {
+      console.error("Error creating payment:", err);
+    } finally {
       setIsProcessing(false);
-    }, 2000);
+    }
   };
 
   const handleReset = () => {
@@ -122,30 +134,6 @@ export default function AddPayment() {
             </div>
           </div>
 
-          {/* Merchant Order ID */}
-          <div className="form-group">
-            <label className="form-label" htmlFor="merchantOrderId">
-              <span className="label-text">Order ID</span>
-              <span className="label-required">*</span>
-            </label>
-            <div className="input-wrapper">
-              <div className="input-prefix">
-                <Hash />
-              </div>
-              <input
-                id="merchantOrderId"
-                type="text"
-                value={merchantOrderId}
-                onChange={(e) => setMerchantOrderId(e.target.value)}
-                className="form-input"
-                placeholder="Enter unique order identifier"
-                required
-                minLength={3}
-                maxLength={50}
-              />
-            </div>
-          </div>
-
           {/* Action buttons */}
           <div className="form-actions">
             <button
@@ -177,6 +165,26 @@ export default function AddPayment() {
             </button>
           </div>
         </form>
+
+        {createdId && (
+          <div className="success-message">
+             Payment created successfully! ID: {createdId}
+            <div style={{ marginTop: 8, display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+              <code style={{ padding: "2px 6px" }}>/CustomerOrder/{createdId}</code>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => {
+                  const url = `${window.location.origin}/CustomerOrder/${createdId}`;
+                  navigator.clipboard.writeText(url);
+                }}
+              >
+                <Copy />
+                <span>Copy payment link</span>
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

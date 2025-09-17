@@ -74,9 +74,9 @@ npm start
 ```
 app/
 ├── page.tsx                 # Home - payments list
-├── new/page.tsx            # New payment form
-├── payments/[id]/page.tsx  # Payment details
-├── pay/[publicId]/page.tsx # Customer payment link
+├── AddPayment/page.tsx            # New payment form
+├── AllPayments/[payID]/page.tsx  # Payment details
+├── CustomerOrder/[order]/page.tsx # Customer payment link
 ├── globals.css             # Global styles
 ├── layout.tsx              # Root layout
 lib/
@@ -85,6 +85,8 @@ lib/
 ├── types.ts                # TypeScript definitions
 actions/
 ├── payments.ts             # Server actions
+API/
+├── payments/route.ts             # Server actions
 components/
 ├── PaymentForm.tsx         # Payment creation form
 ├── PaymentTable.tsx        # Payments list table

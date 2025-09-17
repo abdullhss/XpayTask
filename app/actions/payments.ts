@@ -18,20 +18,19 @@ export async function createPayment(formData: FormData) {
     location,
   };
 
-  addPayment(payment);
-
+  await addPayment(payment);
   revalidatePath("/");
   return payment.id;
 }
 
 export async function markPaid(id: string) {
-  updatePayment(id, "paid");
+  await updatePayment(id, "paid");
   revalidatePath("/");
   revalidatePath(`/payments/${id}`);
 }
 
 export async function markCanceled(id: string) {
-  updatePayment(id, "canceled");
+  await updatePayment(id, "canceled");
   revalidatePath("/");
   revalidatePath(`/payments/${id}`);
 }

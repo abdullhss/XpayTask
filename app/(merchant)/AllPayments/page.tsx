@@ -4,6 +4,7 @@ import "./AllPayments.css";
 import { useRouter } from "next/navigation";
 import { Clock, DollarSign, X, Copy } from "lucide-react";
 import { Payment } from "@/app/types/payment";
+import { showToast } from "@/app/components/toast";
 
 export type { Payment };
 
@@ -39,6 +40,7 @@ const AllPayments = () => {
     if (e) e.stopPropagation();
     const url = `${window.location.origin}/CustomerOrder/${id}`;
     await navigator.clipboard.writeText(url);
+    showToast("Link copied");
   };
 
   return (
@@ -95,9 +97,9 @@ const AllPayments = () => {
                 </span>
               </td>
               <td>
-                <button className="btn btn-secondary" onClick={(e) => copyLink(payment.id, e)}>
-                  <Copy />
-                  <span>Copy link</span>
+                <button className="btn btn-secondary" style={{ cursor: "pointer" }} onClick={(e) => copyLink(payment.id, e)}>
+                  <Copy style={{ cursor: "pointer" }} />
+                  <span style={{ cursor: "pointer" }}>Copy link</span>
                 </button>
               </td>
             </tr>

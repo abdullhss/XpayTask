@@ -24,3 +24,26 @@ body {
   font-family: var(--font-sans);
   transition: background-color 0.3s, color 0.3s;
 }
+
+/* Simple toast */
+.x-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%) translateY(16px);
+  background: rgba(0,0,0,0.8);
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 9999;
+  font-size: 14px;
+}
+
+.x-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}

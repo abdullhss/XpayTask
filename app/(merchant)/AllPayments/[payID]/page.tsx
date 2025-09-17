@@ -4,6 +4,7 @@ import { Payment } from  "@/app/types/payment"
 import "./singlePayment.css"
 import { useParams } from 'next/navigation'
 import { Copy } from 'lucide-react'
+import { showToast } from '@/app/components/toast'
 
 const PaymentCard = () => {
   const params = useParams<{ payID: string }>();
@@ -49,9 +50,9 @@ const PaymentCard = () => {
           <span className="label">Customer link:</span>
           <span className="value" style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
             <code>/CustomerOrder/{payment.id}</code>
-            <button className="btn btn-secondary" onClick={() => navigator.clipboard.writeText(`${window.location.origin}/CustomerOrder/${payment.id}`)}>
-              <Copy />
-              <span>Copy link</span>
+            <button className="btn btn-secondary" style={{ cursor: 'pointer' }} onClick={() => navigator.clipboard.writeText(`${window.location.origin}/CustomerOrder/${payment.id}`).then(() => showToast('Link copied'))}>
+              <Copy style={{ cursor: 'pointer' }} />
+              <span style={{ cursor: 'pointer' }}>Copy link</span>
             </button>
           </span>
         </div>

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import "./AddPayment.css";
 import { CheckCircle, DollarSign, Hash, ListRestart, PlusIcon, User, MapPin, Copy } from "lucide-react";
 import { createPayment } from "@/app/actions/payments";
+import { showToast } from "@/app/components/toast";
 
 export default function AddPayment() {
   const [amount, setAmount] = useState("");
@@ -176,11 +177,11 @@ export default function AddPayment() {
                 className="btn btn-secondary"
                 onClick={() => {
                   const url = `${window.location.origin}/CustomerOrder/${createdId}`;
-                  navigator.clipboard.writeText(url);
+                  navigator.clipboard.writeText(url).then(() => showToast("Link copied"));
                 }}
               >
-                <Copy />
-                <span>Copy payment link</span>
+                <Copy style={{ cursor: "pointer" }} />
+                <span style={{ cursor: "pointer" }}>Copy payment link</span>
               </button>
             </div>
           </div>
